@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -28,6 +29,7 @@ func getProduct(c echo.Context) error {
 }
 
 func listProducts(c echo.Context) error {
+	print("listing products\n")
 	return c.JSON(http.StatusOK, products)
 }
 
@@ -35,6 +37,10 @@ func createProduct(c echo.Context) error {
 	p := new(Product)
 	if err := c.Bind(p); err != nil {
 		return err
+	}
+
+	if p.Title == "" {
+		return c.NoContent(http.StatusBadRequest)
 	}
 
 	p.ID = uuid.NewV4().String()
@@ -61,6 +67,10 @@ func main() {
 	products = append(products, p1, p2)
 
 	e := echo.New()
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://localhost:3000"},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+	}))
 	e.GET("/products/:id", getProduct)
 	e.GET("/products", listProducts)
 	e.POST("/products", createProduct)

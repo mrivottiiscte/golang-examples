@@ -16,7 +16,7 @@ type Product struct {
 var products []Product
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "<h1>Hello world!!</h1>")
+	fmt.Fprintf(w, "<h1>Hello turma!!!!!</h1>")
 }
 
 func listProducts(w http.ResponseWriter, r *http.Request) {
