@@ -108,3 +108,8 @@ func (h handler) List(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, productsResponse)
 }
+
+func (h handler) Health(c echo.Context) error {
+
+	return c.JSON(http.StatusOK, "ok")
+}

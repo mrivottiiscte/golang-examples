@@ -39,7 +39,7 @@ func main() {
 		panic("no DATABASE_HOST")
 	}
 
-	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=require",
 		host, port, user, password, dbname)
 
 	db, err := sql.Open("postgres", psqlInfo)
@@ -80,6 +80,8 @@ func main() {
 	e.POST("/product", productHandler.Post)
 	e.GET("/product/:id", productHandler.Get)
 	e.GET("/product/", productHandler.List)
+
+	e.GET("/health", productHandler.Health)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
